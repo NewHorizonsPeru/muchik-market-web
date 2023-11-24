@@ -1,0 +1,30 @@
+﻿@page "/"
+@inject ILogger<Counter> Logger;
+
+<PageTitle>Home</PageTitle>
+
+<h1>Muchik Market!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="New Horizons" />
+
+@code {
+    protected override void OnParametersSet()
+    {
+        Logger.LogInformation("OnParametersSet");
+        base.OnParametersSet();
+    }
+
+    protected override void OnInitialized()
+    {
+        Logger.LogInformation("OnInitialized");
+        base.OnInitialized();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Logger.LogInformation("OnAfterRender");
+        base.OnAfterRender(firstRender);
+    }
+}
