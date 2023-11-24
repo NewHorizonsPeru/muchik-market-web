@@ -1,4 +1,4 @@
-﻿@page "/counter/{initValueCounter?}"
+﻿@page "/counter"
 @inject ILogger<Counter> Logger;
 
 <PageTitle>Counter</PageTitle>
@@ -12,28 +12,18 @@
 @code {
     private int currentCount = 0;
 
+    [SupplyParameterFromQuery]
     [Parameter]
-    public string? initValueCounter { get; set; }
-
-    public override async Task SetParametersAsync(ParameterView parameterView)
-    {
-        if (parameterView.TryGetValue<string>(nameof(initValueCounter), out var value))
-        {
-            if (value is not null)
-                initValueCounter = value;
-        }
-        await base.SetParametersAsync(parameterView);
-    }
-
-    protected override void OnInitialized()
-    {
-        Logger.LogInformation($"initValueCounter: {initValueCounter}");
-        currentCount = initValueCounter != null ? int.Parse(initValueCounter) : 0;
-    }
+    public string? InitValueFromUrl { get; set; }
 
     private void IncrementCount()
     {
         currentCount++;
         StateHasChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        currentCount = InitValueFromUrl != null ? int.Parse(InitValueFromUrl) : 0;
     }
 }
