@@ -1,21 +1,40 @@
 ﻿@page "/"
-@inject ILogger<Counter> _logger;
-@inject IConfiguration _config;
+
+@inject IRamService _ramService;
 
 <PageTitle>Home</PageTitle>
 
-<BodyTitle Title="Muchik Market!" />
+@if (loading)
+{
+	<h5>Cargando...</h5>
+}
+else
+{
+	if (characters.Results.Count > 0)
+	{
+		<h1>Rick & Morty 🚀</h1>
+		<br>
+		<div class="products-container">
+			@foreach (var character in characters.Results)
+			{
+				<div class="card">
+					<img class="card-img-top" src="@character.Image" alt="Character" loading="lazy" width="270" height="210"/>
+					<div class="card-body">
+						<h4><b>@character.Name</b></h4>
+					</div>
+				</div>
+			}
+		</div>
+	}
+	else
+	{
+		<h5>No hay personajes para mostrar.</h5>
+	}
+}
 
-Welcome to your new app.
-Muchik Api Url: @MuchikApiUrl
-<SurveyPrompt Title="New Horizons" />
 
 @code {
-    public string MuchikApiUrl = "";
-    protected override void OnInitialized()
-    {
-        _logger.LogInformation(_config["muchik-api-url"]);
-        MuchikApiUrl = _config["muchik-api-url"];
-    }
 
+	private bool loading = true;
+	private Characters characters { get; set; } = null!;
 }
