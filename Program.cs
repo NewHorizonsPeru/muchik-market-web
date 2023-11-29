@@ -9,9 +9,16 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 var muchikMarketApiUrl = builder.Configuration.GetValue<string>("MuchikMarketApiUrl");
+var rickAndMortyApiUrl = builder.Configuration.GetValue<string>("RamApiUrl");
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(muchikMarketApiUrl!) });
-builder.Services.AddScoped<IMuchikMarketService, MuchikMarketService>();
-builder.Services.AddScoped<IRamService, RamService>();
+builder.Services.AddHttpClient<RickAndMortyService>(client =>
+{
+	client.BaseAddress = new Uri(rickAndMortyApiUrl!);
+});
+
+builder.Services.AddHttpClient<MuchikMarketService>(client =>
+{
+	client.BaseAddress = new Uri(muchikMarketApiUrl!);
+});
 
 await builder.Build().RunAsync();

@@ -4,12 +4,12 @@ using System.Text.Json;
 
 namespace muchik.market.web.Services
 {
-    public class RamService : IRamService
+    public class RickAndMortyService
     {
         private readonly HttpClient _httpClient;
         private readonly JsonSerializerOptions _jsonSerializerOptions;
 
-        public RamService(HttpClient httpClient)
+        public RickAndMortyService(HttpClient httpClient)
         {
             _httpClient = httpClient;
             _jsonSerializerOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true};

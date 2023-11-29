@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace muchik.market.web.Services
 {
-    public class MuchikMarketService : IMuchikMarketService
+    public class MuchikMarketService
     {
         private readonly HttpClient _httpClient;
         private readonly JsonSerializerOptions _jsonSerializerOptions;

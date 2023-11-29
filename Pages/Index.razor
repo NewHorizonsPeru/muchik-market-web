@@ -1,6 +1,6 @@
 ﻿@page "/"
 
-@inject IRamService _ramService;
+@inject RickAndMortyService _rickAndMortyService;
 
 <PageTitle>Home</PageTitle>
 
@@ -37,4 +37,15 @@ else
 
 	private bool loading = true;
 	private Characters characters { get; set; } = null!;
+
+	protected override async Task OnInitializedAsync()
+	{
+		characters = await GetCharacters();
+		loading = false;
+	}
+
+	private async Task<Characters> GetCharacters()
+	{
+		return await _rickAndMortyService.GetCharacters();
+	}
 }
