@@ -1,0 +1,58 @@
+﻿@page "/products"
+@inject ILogger<Products> _logger;
+@inject NavigationManager _navigationManager;
+@inject IMuchikMarketService _muchikMarketService;
+
+@if (loading)
+{
+	<h5>Cargando...</h5>
+}
+else
+{
+	if (products.Data.Count > 0)
+	{
+		<h1>🛒 Productos</h1>
+		<br />
+		<div class="text-end">
+			<button class="btn btn-dark" @onclick="@(() => _navigationManager.NavigateTo("/addProduct"))">Agregar Producto</button>
+		</div>
+		<br />
+		<div class="row">
+			@foreach (var product in products.Data)
+			{
+				<div class="col-sm-3 mb-3">
+					<div class="card">
+						<img class="card-img-top" src="@product.ImageUrl" alt="Character" loading="lazy" width="270" height="210" />
+						<div class="card-body">
+							<p class="card-title">@product.Brand.Name</p>
+							<b class="card-text">@(product.Name.Length > 25 ? (product.Name.Substring(0, 22) + "...") : product.Name)</b>
+						</div>
+						<div class="card-footer text-end">
+							<a href="#" class="btn btn-success"><span class="oi oi-plus" aria-hidden="true"></span> Agregar</a>
+						</div>
+					</div>
+				</div>
+			}						
+		</div>
+	}
+	else
+	{
+		<h5>No hay productos para mostrar.</h5>
+	}
+}
+
+@code {
+	private bool loading = true;
+	private muchik.market.web.Models.Products products { get; set; } = null!;
+
+	protected override async Task OnInitializedAsync()
+	{
+		products = await GetProducts();
+		loading = false;
+	}
+
+	private async Task<muchik.market.web.Models.Products> GetProducts()
+	{
+		return await _muchikMarketService.GetProducts();
+	}
+}
