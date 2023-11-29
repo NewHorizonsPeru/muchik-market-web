@@ -2,7 +2,7 @@
 
 namespace muchik.market.web.Interfaces
 {
-    public interface IRamService
+    public interface IRickAndMortyService
     {
         Task<Characters> GetCharacters();
     }
