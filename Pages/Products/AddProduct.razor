@@ -1,6 +1,7 @@
 ﻿@page "/addProduct"
 @inject ILogger<Products> _logger;
 @inject NavigationManager _navigationManager;
+@inject IToastService _toastService;
 @inject IMuchikMarketService _muchikMarketService;
 
 <h1>🎈 Agregar Producto</h1>
@@ -81,8 +82,16 @@
 
 	private async Task Save()
 	{
-		var productSave = product;
-		await _muchikMarketService.AddProduct(productSave);
-		_navigationManager.NavigateTo("/products");
+		try
+		{
+			var productSave = product;
+			await _muchikMarketService.AddProduct(productSave);
+			_toastService.ShowSuccess("Producto creado correctamente.");
+			_navigationManager.NavigateTo("/products");
+		}
+		catch (Exception ex)
+		{
+			_toastService.ShowError("Ocurrió un error, vuelva a intentar en unos minutos.");
+		}
 	}
 }

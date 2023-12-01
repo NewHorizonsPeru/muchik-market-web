@@ -24,8 +24,8 @@ else
 					<div class="card">
 						<img class="card-img-top" src="@product.ImageUrl" alt="Character" loading="lazy" width="270" height="210" />
 						<div class="card-body">
-							<p class="card-title">@product.Brand.Name</p>
-							<b class="card-text">@(product.Name.Length > 25 ? (product.Name.Substring(0, 22) + "...") : product.Name)</b>
+							<b class="card-title">@product.Brand.Name</b>
+							<p class="card-text">@(product.Name.Length > 23 ? (product.Name.Substring(0, 20) + "...") : product.Name)</p>
 						</div>
 						<div class="card-footer text-end">
 							<a href="#" class="btn btn-success"><span class="oi oi-plus" aria-hidden="true"></span> Agregar</a>

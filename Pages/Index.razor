@@ -1,5 +1,6 @@
 ﻿@page "/"
-
+@inject ILogger<Index> _logger;
+@inject IJSRuntime _jsRuntime;
 @inject IRickAndMortyService _rickAndMortyService;
 
 <PageTitle>Home</PageTitle>
@@ -13,17 +14,25 @@ else
 	if (characters.Results.Count > 0)
 	{
 		<h1>Rick & Morty 🚀</h1>
-		<br>
-		<div class="products-container">
+		<br />
+		<br />
+		<br />
+		<div class="row">
 			@foreach (var character in characters.Results)
 			{
-				<div class="card">
-					<img class="card-img-top" src="@character.Image" alt="Character" loading="lazy" width="270" height="210"/>
-					<div class="card-body">
-						<h4><b>@character.Name</b></h4>
+				<div class="col-sm-3 mb-3">
+					<div class="card">
+						<img class="card-img-top" src="@character.Image" alt="Character" loading="lazy" width="270" height="210" />
+						<div class="card-body">
+							<p class="card-title">@character.Name</p>
+							<b class="card-text">@character.Type</b>
+						</div>
+						<div class="card-footer text-end">
+							<button title="Alert" class="btn btn-warning" @onclick="@(() => AlertCharacter(character))" ><span class="oi oi-plus" aria-hidden="true"></span></button>
+						</div>
 					</div>
 				</div>
-			}
+			}						
 		</div>
 	}
 	else
@@ -47,5 +56,11 @@ else
 	private async Task<Characters> GetCharacters()
 	{
 		return await _rickAndMortyService.GetCharacters();
+	}
+
+	private async Task AlertCharacter(Result character)
+	{
+		await _jsRuntime.InvokeVoidAsync("alert", $"El personaje seleccionado es: {character.Name}.");
+		_logger.LogWarning(character.Name);				
 	}
 }
