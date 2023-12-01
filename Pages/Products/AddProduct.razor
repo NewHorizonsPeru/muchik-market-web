@@ -69,6 +69,9 @@
 </div>
 @code {
 
+	[CascadingParameter]
+	public IModalService Modal { get; set; } = null!;
+
 	private NewProduct product = new();
 
 	private List<Brand> brands = new List<Brand>();
@@ -85,9 +88,10 @@
 		try
 		{
 			var productSave = product;
-			await _muchikMarketService.AddProduct(productSave);
-			_toastService.ShowSuccess("Producto creado correctamente.");
-			_navigationManager.NavigateTo("/products");
+			//await _muchikMarketService.AddProduct(productSave);
+			Modal.Show<ModalLayout>("Mensaje");
+			//_toastService.ShowSuccess("Producto creado correctamente.");
+			//_navigationManager.NavigateTo("/products");
 		}
 		catch (Exception ex)
 		{

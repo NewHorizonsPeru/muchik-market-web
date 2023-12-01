@@ -1,3 +1,4 @@
+using Blazored.Modal;
 using Blazored.Toast;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -13,6 +14,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 var muchikMarketApiUrl = builder.Configuration.GetValue<string>("MuchikMarketApiUrl");
 var rickAndMortyApiUrl = builder.Configuration.GetValue<string>("RamApiUrl");
 
+builder.Services.AddBlazoredModal();
 builder.Services.AddBlazoredToast();
 
 builder.Services.AddHttpClient(Constants.RickAndMortyClient, client =>
