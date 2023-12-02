@@ -1,6 +1,6 @@
 ﻿namespace muchik.market.web.Models
 {
-	public partial class Products
+	public partial class GetProductsResponse
 	{
 		public bool Success { get; set; }
 		public string Message { get; set; } = null!;

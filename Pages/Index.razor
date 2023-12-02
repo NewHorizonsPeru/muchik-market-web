@@ -45,7 +45,7 @@ else
 @code {
 
 	private bool loading = true;
-	private Characters characters { get; set; } = null!;
+	private GetCharactersResponse characters { get; set; } = null!;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -53,12 +53,12 @@ else
 		loading = false;
 	}
 
-	private async Task<Characters> GetCharacters()
+	private async Task<GetCharactersResponse> GetCharacters()
 	{
 		return await _rickAndMortyService.GetCharacters();
 	}
 
-	private async Task AlertCharacter(Result character)
+	private async Task AlertCharacter(Character character)
 	{
 		await _jsRuntime.InvokeVoidAsync("alert", $"El personaje seleccionado es: {character.Name}.");
 		_logger.LogWarning(character.Name);				

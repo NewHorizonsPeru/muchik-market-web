@@ -16,14 +16,14 @@ namespace muchik.market.web.Services
             _jsonSerializerOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true};
         }
 
-        public async Task<Characters> GetCharacters()
+        public async Task<GetCharactersResponse> GetCharacters()
         {
             var httpClient = _httpClientFactory.CreateClient(Constants.RickAndMortyClient);
             var response = await httpClient.GetAsync("character");
             var content  = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode) { throw new ApplicationException(content); }
 
-            return JsonSerializer.Deserialize<Characters>(content, _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<GetCharactersResponse>(content, _jsonSerializerOptions);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace muchik.market.web.Services
             _jsonSerializerOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true};
         }
 
-        public async Task<Products> GetProducts()
+        public async Task<GetProductsResponse> GetProducts()
         {
             try {
 				var httpClient = _httpClientFactory.CreateClient(Constants.MuchikMarketClient);
@@ -25,7 +25,7 @@ namespace muchik.market.web.Services
 				var content = await response.Content.ReadAsStringAsync();
 				if (!response.IsSuccessStatusCode) { throw new ApplicationException(content); }
 
-				return JsonSerializer.Deserialize<Products>(content, _jsonSerializerOptions);
+				return JsonSerializer.Deserialize<GetProductsResponse>(content, _jsonSerializerOptions);
 			}
 			catch (Exception ex) {
                 throw new Exception();

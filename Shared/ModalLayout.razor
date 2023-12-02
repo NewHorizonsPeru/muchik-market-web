@@ -1,4 +1,31 @@
-﻿<h3>Producto registrado correctamente.</h3>
+﻿<div class="modal fade show d-block" tabindex="-1" role="dialog">
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal-dialog" style="z-index: 1050">
+        <!-- Pop it above the backdrop -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">📢 Notificación</h5>
+            </div>
+            <div class="modal-body">
+                <p>@Message</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="Accept">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-@code {
+@code{
+
+    [CascadingParameter]
+    BlazoredModalInstance BlazorModal { get; set; } = default!;
+
+    [EditorRequired]
+    [Parameter]
+    public string Message { get; set; } = null!;
+
+    private async Task Accept() => await BlazorModal.CloseAsync(ModalResult.Ok(true));
+
+
 }

@@ -70,7 +70,7 @@
 @code {
 
 	[CascadingParameter]
-	public IModalService Modal { get; set; } = null!;
+	public IModalService ModalComponent { get; set; } = null!;
 
 	private NewProduct product = new();
 
@@ -88,14 +88,26 @@
 		try
 		{
 			var productSave = product;
-			//await _muchikMarketService.AddProduct(productSave);
-			Modal.Show<ModalLayout>("Mensaje");
-			//_toastService.ShowSuccess("Producto creado correctamente.");
-			//_navigationManager.NavigateTo("/products");
+			await _muchikMarketService.AddProduct(productSave);
+			await OpenModal("El producto se registró correctamente.");
 		}
 		catch (Exception ex)
 		{
 			_toastService.ShowError("Ocurrió un error, vuelva a intentar en unos minutos.");
+		}
+	}
+
+	private async Task OpenModal(string message)
+	{
+		var modalOptions = new ModalOptions { UseCustomLayout = true };
+		var modalParameters = new ModalParameters();
+		modalParameters.Add(nameof(ModalLayout.Message), message);
+		var modalLayout = ModalComponent.Show<ModalLayout>(string.Empty, modalParameters, modalOptions);
+		var modalResult = await modalLayout.Result;
+
+		if (modalResult.Confirmed)
+		{
+			_navigationManager.NavigateTo("/products");
 		}
 	}
 }
