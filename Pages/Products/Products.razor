@@ -9,7 +9,7 @@
 }
 else
 {
-	if (products.Data.Count > 0)
+	if (products.Count > 0)
 	{
 		<h1>🛒 Productos</h1>
 		<br />
@@ -18,7 +18,7 @@ else
 		</div>
 		<br />
 		<div class="row">
-			@foreach (var product in products.Data)
+			@foreach (var product in products)
 			{
 				<div class="col-sm-3 mb-3">
 					<div class="card">
@@ -43,7 +43,7 @@ else
 
 @code {
 	private bool loading = true;
-	private muchik.market.web.Models.GetProductsResponse products { get; set; } = null!;
+	private List<Product> products { get; set; } = null!;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -51,7 +51,7 @@ else
 		loading = false;
 	}
 
-	private async Task<muchik.market.web.Models.GetProductsResponse> GetProducts()
+	private async Task<List<Product>> GetProducts()
 	{
 		return await _muchikMarketService.GetProducts();
 	}

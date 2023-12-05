@@ -7,7 +7,21 @@
 		public List<Product> Data { get; set; } = null!;
 	}
 
-	public partial class NewProduct
+    public partial class GetBrandsResponse
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; } = null!;
+        public List<Brand> Data { get; set; } = null!;
+    }
+
+    public partial class GetCategoriesResponse
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; } = null!;
+        public List<Category> Data { get; set; } = null!;
+    }
+
+    public partial class NewProduct
 	{
 		public string Name { get; set; } = null!;
 		public string Sku { get; set; } = null!;

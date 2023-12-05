@@ -8,7 +8,7 @@ namespace muchik.market.web.Helper
 	public class AuthenticationHelper : AuthenticationStateProvider
 	{
 		private readonly ISessionStorageService _sessionStorageService;
-		private ClaimsPrincipal claimÉmpty = new ClaimsPrincipal(new ClaimsIdentity());
+		private ClaimsPrincipal claimEmpty = new ClaimsPrincipal(new ClaimsIdentity());
 
 		public AuthenticationHelper(ISessionStorageService sessionStorageService)
 		{
@@ -21,7 +21,7 @@ namespace muchik.market.web.Helper
 
 			if(currentUser == null)
 			{
-				claimsPrincipal = claimÉmpty;
+				claimsPrincipal = claimEmpty;
 				await _sessionStorageService.RemoveItemAsync("userData");
 			}
 			else
@@ -42,7 +42,9 @@ namespace muchik.market.web.Helper
 		public override async Task<AuthenticationState> GetAuthenticationStateAsync()
 		{
 			var currentUser = await _sessionStorageService.GetValueFromSessionStorage<User>("userData");
-			if (currentUser == null) return await Task.FromResult(new AuthenticationState(claimÉmpty));
+			if (currentUser == null) { 
+				return await Task.FromResult(new AuthenticationState(claimEmpty)); 
+			}
 
 			var claimIdentity = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
 			{

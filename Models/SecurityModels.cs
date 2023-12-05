@@ -1,7 +1,7 @@
 ﻿namespace muchik.market.web.Models
 {
 	public class PostSignInResponse
-	{
+    {
 		public bool Success { get; set; }
 		public string Message { get; set; } = null!;
 		public User Data { get; set; } = null!;
@@ -21,7 +21,7 @@
 		public string Name { get; set; } = null!;
 	}
 
-	public class PostSignInRequest
+	public class SignInRequest
 	{
 		public string Email { get; set; } = null!;
 		public string Password { get; set; } = null!;
