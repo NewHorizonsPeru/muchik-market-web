@@ -1,5 +1,8 @@
 ﻿@inherits LayoutComponentBase
 
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject NavigationManager _navManager
+
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -7,7 +10,7 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="#"><span class="oi oi-account-logout" aria-hidden="true"></span> Cerrar Sesión</a>
+            <a @onclick="Logout" href="javascript:void(0)">Cerrar Sesión</a>
         </div>
 
         <article class="content px-4">
@@ -17,3 +20,12 @@
 </div>
 
 <BlazoredToasts />
+
+@code{
+    private async Task Logout()
+    {
+        var authenticationHelper = (AuthenticationHelper)authenticationStateProvider;
+        await authenticationHelper.UpdateStateFromAuthentication(null);
+        _navManager.NavigateTo("/login");
+    }
+}

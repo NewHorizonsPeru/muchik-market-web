@@ -8,6 +8,8 @@ namespace muchik.market.web.Interfaces
 		Task AddProduct(NewProduct newProduct);
 		Task<List<Brand>> GetBrands();
 		Task<List<Category>> GetCategories();
-		Task<User> SignIn(SignInRequest signInRequest);
+		Task<User?> SignIn(SignInRequest signInRequest);
+		Task<List<Role>> GetRoles();
+		Task SignUp(NewUser newUser);
     }
 }

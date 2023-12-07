@@ -1,0 +1,91 @@
+﻿@page "/register"
+@layout PublicLayout
+@inject ILogger<SignUp> _logger
+@inject NavigationManager _navigationManager
+@inject IToastService _toastService;
+@inject IMuchikMarketService _muchikMarketService
+
+<div class="row mt-5">
+    <div class="col-lg-4 offset-lg-4 border">
+        <EditForm Model="@user" OnSubmit="@Save">
+            <div class="mb-3 text-center">
+            <h3>Muchik Market</h3>
+            </div>
+
+            <div class="mb-3">
+                <label>Email</label>
+                <InputText id="email" @bind-Value="user.Email" required class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label>Contraseña</label>
+                <InputText id="password" @bind-Value="user.Password" required class="form-control" type="password"/>
+            </div>
+
+            <div class="mb-3">
+                <label>Role</label>
+                <InputSelect id="role" @bind-Value="user.RoleId" required class="form-control">
+                    <option>Seleccionar</option>
+                    @foreach (var role in roles)
+                    {
+                        <option value="@role.Id">@role.Name</option>
+                    }
+                </InputSelect>
+            </div>
+
+            <div class="mb-3 text-center">
+                <button class="btn btn-success">Crear Cuenta</button>
+            </div>
+        </EditForm>
+        
+        <div class="mb-3 text-center">
+            <button class="btn btn-secondary" @onclick="RedirectToLogin">Regresar</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    public IModalService ModalComponent { get; set; } = null!;
+
+    private NewUser user = new();
+
+    private List<Role> roles = new List<Role>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        roles = await _muchikMarketService.GetRoles();
+    }
+
+    private async Task Save()
+    {
+        try
+        {
+            await _muchikMarketService.SignUp(user);
+            await OpenModal("El usuario se registró correctamente.");
+        }
+        catch (Exception ex)
+        {
+            _toastService.ShowError("Ocurrió un error, vuelva a intentar en unos minutos.");
+        }
+    }
+
+    private async Task OpenModal(string message)
+    {
+        var modalOptions = new ModalOptions { UseCustomLayout = true };
+        var modalParameters = new ModalParameters();
+        modalParameters.Add(nameof(ModalLayout.Message), message);
+        var modalLayout = ModalComponent.Show<ModalLayout>(string.Empty, modalParameters, modalOptions);
+        var modalResult = await modalLayout.Result;
+
+        if (modalResult.Confirmed)
+        {
+            RedirectToLogin();
+        }
+    }
+
+    private void RedirectToLogin()
+    {
+        _navigationManager.NavigateTo("/login");
+    }
+}

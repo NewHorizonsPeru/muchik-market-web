@@ -1,5 +1,10 @@
-﻿@page "/"
+﻿@page "/login"
 @layout PublicLayout
+@inject ILogger<SignIn> _logger
+@inject NavigationManager _navigationMananger
+@inject IToastService _toastService;
+@inject AuthenticationStateProvider authenticationStateProvider;
+@inject IMuchikMarketService _muchikMarketService
 
 <div class="row mt-5">
 
@@ -11,22 +16,53 @@
 
         <div class="mb-3">
             <label>Email</label>
-            <input class="form-control" type="text"/>
+            <input class="form-control" @bind="signInRequest.Email" type="text"/>
         </div>
 
         <div class="mb-3">
             <label>Contraseña</label>
-            <input class="form-control" type="password"/>
+            <input class="form-control" @bind="signInRequest.Password" type="password" />
         </div>
 
-        <div class="mb-3">
-            <button class="btn btn-primary">Login</button>
+        <div class="mb-3 text-center">
+            <button class="btn btn-primary" @onclick="Login">Iniciar Sesión</button>
         </div>
-
+        <div class="mb-3 text-center">
+            <button class="btn btn-success" @onclick="RedirectToRegister">Registrar</button>
+        </div>
     </div>
 
 </div>
 
 @code {
 
+    private SignInRequest signInRequest = new ();
+
+    private async Task Login()
+    {
+        if (string.IsNullOrEmpty(signInRequest.Email) || string.IsNullOrEmpty(signInRequest.Password))
+        {
+            _toastService.ShowInfo("Debe ingresar un correo y una contraseña.");
+        }
+        else
+        {
+            var currentUser = await _muchikMarketService.SignIn(signInRequest);
+            if(currentUser is null)
+            {
+                _toastService.ShowInfo("Usuario y/o contraseña incorrecta.");
+            }
+            else
+            {
+                var authenticationHelper = (AuthenticationHelper) authenticationStateProvider;
+                await authenticationHelper.UpdateStateFromAuthentication(currentUser);
+
+                _navigationMananger.NavigateTo("/");
+            }
+        }
+    }
+
+    private void RedirectToRegister()
+    {
+        _navigationMananger.NavigateTo("/register");
+    }
 }
